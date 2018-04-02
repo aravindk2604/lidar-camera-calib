@@ -11,7 +11,14 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  sensor_msgs
+  cv_bridge
+  image_transport
+  pcl_ros
+  pcl_conversions
 )
+
+find_package(OpenCV 3 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -103,9 +110,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS
 #  LIBRARIES cam_calib
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs cv_bridge image_transport pcl_ros pcl_conversions
 #  DEPENDS system_lib
 )
 
@@ -118,6 +125,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -134,6 +142,13 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/cam_calib_node.cpp)
+
+add_executable(roscpp_hello_world src/roscpp_hello_world.cpp)
+target_link_libraries(roscpp_hello_world ${catkin_LIBRARIES})
+add_executable(roscpp_opencv_example src/roscpp_opencv.cpp)
+target_link_libraries(roscpp_opencv_example ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_executable(roscpp_pcl_example src/roscpp_pcl.cpp)
+target_link_libraries(roscpp_pcl_example ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

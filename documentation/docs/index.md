@@ -17,7 +17,8 @@ By running the `cameracalibrator.py` node in the terminal, I was able to get the
 rosbag info 2016-11-22-14-32-13_test.bag
 ```
 
-I get the following output:
+
+* I get the following output:
 
 ```
 path:        2016-11-22-14-32-13_test.bag
@@ -36,24 +37,27 @@ topics:      /sensors/camera/camera_info   2500 msgs    : sensor_msgs/CameraInfo
              /sensors/velodyne_points      2269 msgs    : sensor_msgs/PointCloud2
 ```
 
+
 This rosbag data consists of the monocular camera data and velodyne lidar data. The concerned __topics__ for this task are `/sensors/camera/camera_info`  and  `/sensors/camera/image_color` .  
 
 I played the rosbag data and used the `cameracalibrator.py` node to get a GUI that started performing the calibration as the camera data played. I calibrated and saved the parameters.
 
-The command to play the rosbag is:
+
+* The command to play the rosbag is:
 ```
 $ rosbag play 2016-11-22-14-32-13_test.bag
 ```
   
 
-The command to run the `cameracalibrator.py` node is:
+* The command to run the `cameracalibrator.py` node is:
 ```
 $ rosrun camera_calibration cameracalibrator.py --size=5x7 --square=0.050 image:=/sensors/camera/image_color camera:=/sensors/camera/camera_info  --no-service-check
 ```
 
 > The checker board pattern had the dimensions 5x7 corners and each square was 5cm.
 
-The calibration parameters are as follows:
+
+* The calibration parameters are as follows:
 ```
 image_width: 964
 image_height: 724
