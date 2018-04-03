@@ -57,7 +57,7 @@ $ rosrun camera_calibration cameracalibrator.py --size=5x7 --square=0.050 image:
 > The checker board pattern had the dimensions 5x7 corners and each square was 5cm.
 
 
-* The calibration parameters are as follows:
+* The calibration parameters obtained by running the above command is as follows:
 ```
 image_width: 964
 image_height: 724
@@ -82,4 +82,46 @@ projection_matrix:
 ```
 
 
-  
+I wrote a C++ code to get the camera calibration parameters and used this [OpenCV documentation on Camera Calibration](https://docs.opencv.org/2.4/doc/tutorials/calib3d/camera_calibration/camera_calibration.html
+) as a reference.
+
+You can find this file under `src/cam_calib/src/images/camCalibrationParameters.cpp` . I screen-grabbed 30 images from the rosbag and used a yml file to read in the list of images for camera calibration process. 
+
+> It is important to know that a `.jpg` image output will be different from a `.png` output while calibrating the camera. I realised this when I was working with `.png` files and the camera calibration paramenters always showed zeros.
+
+I use the terminal to run my code and the command is:
+```
+$ g++ -std=c++11 camCalibrationParameters.cpp `pkg-config --libs --cflags opencv` -o output
+
+$ ./output
+
+```
+
+The output of my code is stored in a yml file which is as follows:
+
+```
+%YAML:1.0
+---
+camera_matrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 4.8500013227778845e+02, 0., 4.6048439978206324e+02, 0.,
+       4.8446529771202120e+02, 3.6882717135520573e+02, 0., 0., 1. ]
+distortion_coefficients: !!opencv-matrix
+   rows: 1
+   cols: 5
+   dt: d
+   data: [ -2.1897207538791941e-01, 1.1378088445810178e-01,
+       2.7963672438432903e-03, 1.2647206581812528e-03,
+       -2.7036330701899484e-02 ]
+
+```
+
+##### TODO
+- [ ] explain image_proc
+- [ ] bag_tools used for recording new rosbag with camera calibration
+- [ ] unavailability of bag_tools for ROS Kinetic
+- [ ] rectified image output
+
+The [rectified image output](../_videos/rectified_camera_output.mp4) video is placed inside the `_videos` directory.

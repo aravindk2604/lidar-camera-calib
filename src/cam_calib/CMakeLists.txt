@@ -143,12 +143,12 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/cam_calib_node.cpp)
 
-add_executable(roscpp_hello_world src/roscpp_hello_world.cpp)
-target_link_libraries(roscpp_hello_world ${catkin_LIBRARIES})
-add_executable(roscpp_opencv_example src/roscpp_opencv.cpp)
-target_link_libraries(roscpp_opencv_example ${catkin_LIBRARIES} ${OpenCV_LIBS})
-add_executable(roscpp_pcl_example src/roscpp_pcl.cpp)
-target_link_libraries(roscpp_pcl_example ${catkin_LIBRARIES})
+#add_executable(roscpp_hello_world src/roscpp_hello_world.cpp)
+#target_link_libraries(roscpp_hello_world ${catkin_LIBRARIES})
+#add_executable(roscpp_opencv_example src/roscpp_opencv.cpp)
+#target_link_libraries(roscpp_opencv_example ${catkin_LIBRARIES} ${OpenCV_LIBS})
+#add_executable(roscpp_pcl_example src/roscpp_pcl.cpp)
+#target_link_libraries(roscpp_pcl_example ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
