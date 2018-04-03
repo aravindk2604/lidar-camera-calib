@@ -124,4 +124,4 @@ distortion_coefficients: !!opencv-matrix
 - [ ] unavailability of bag_tools for ROS Kinetic
 - [ ] rectified image output
 
-The [rectified image output](../_videos/rectified_camera_output.mp4) video is placed inside the `_videos` directory.
+The [rectified image output](_videos/rectified_camera_output.mp4) video is placed inside the `_videos` directory.
