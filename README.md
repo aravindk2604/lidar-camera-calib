@@ -186,7 +186,7 @@ It is essentially the reverse process of projecting the 2D cordinates with RGB d
 As this is a continuation of the previous task, the correct tranformation matrix and the frame matching is essential to achieve a decent/acceptable output. 
 
 
-I referred the following articles:
+I referred the following articles:  
 [Processing Camera Data](https://mirror.umd.edu/roswiki/attachments/Events(2f)PR2BetaTraining/camera_processing.pdf)  
 [OpenCV Camera Calibration and 3D Reconstruction](https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#void%20projectPoints(InputArray%20objectPoints,%20InputArray%20rvec,%20InputArray%20tvec,%20InputArray%20cameraMatrix,%20InputArray%20distCoeffs,%20OutputArray%20imagePoints,%20OutputArray%20jacobian,%20double%20aspectRatio))  
 [Programming Computer Vision with Python](http://programmingcomputervision.com/)
