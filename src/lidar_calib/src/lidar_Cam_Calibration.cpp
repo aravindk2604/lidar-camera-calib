@@ -31,8 +31,10 @@
 
 // Topics
 static const std::string LIDAR_TOPIC = "/sensors/velodyne_points";
-static const std::string IMG_TOPIC = "/sensors/camera/image_color";
+static const std::string IMG_TOPIC = "/sensors/camera/image_rect_color";
+static const std::string CAMERA_INFO = "/sensors/camera/camera_info";
 static const std::string COMPOSITE_IMG_OUT = "/sensors/camera/lidar_image"; // lidar points on camera image
+
 //static const std::string OPENCV_WINDOW = "Image window";
 
 
