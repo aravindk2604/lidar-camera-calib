@@ -153,7 +153,7 @@ This is a ROS node that subscribes to the following:
 `/sensors/velodyne_points`
 
 and publishes the composite image on `/sensors/camera/lidar_image`.  
-The node subscibes to the LiDAR data from the modified rosbag and some processing is done on the `pcl::PointCloud2` data. The rosbag data format for the LiDAR is `sensor_msgs/PointCloud2`. I inspected the data using `rqt` another handy tool, and found that the data comprised of `pcl::PointCloudXYZI` type. 3D co-ordinates X, Y, Z and the intensity I.  
+The node subscibes to the LiDAR data from the modified rosbag and some processing is done on the `pcl::PointCloud2` data. The rosbag data format for the LiDAR is `sensor_msgs/PointCloud2`. I inspected the data using `rqt` another handy tool, and found that the data comprised of `pcl::PointXYZI` type. 3D co-ordinates X, Y, Z and the intensity I.  
 
 Some processing is done on the PCL data to omit the negative x-axis values and to also limit the values in the positive x-axis between 0 and 4.5 meters away from the LiDAR. I did not do any downsampling as I felt the data was not that dense and can be managed easily.  
 
@@ -179,7 +179,14 @@ A [snapshot](../_results/task2output.png) of the progressive output of Task 2 ca
 Clearly, there is a huge error with the rotation vector values computed and the mismatch of frames between camera and the LiDAR.
 
 
+## Task 3. Visualize RGB data from the camera as a point cloud in RVIZ
+
+It is essentially the reverse process of projecting the 2D cordinates with RGB data on a 3D co-ordinate point cloud. By using the `pcl::PointXYZRGB` type the appropriate RGB values from every pixel in an image frame can be visualized in 3D.  
+
+As this is a continuation of the previous task, the correct tranformation matrix and the frame matching is essential to achieve a decent/acceptable output. 
 
 
-
-
+I referred the following articles:
+[Processing Camera Data](https://mirror.umd.edu/roswiki/attachments/Events(2f)PR2BetaTraining/camera_processing.pdf)  
+[OpenCV Camera Calibration and 3D Reconstruction](https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#void%20projectPoints(InputArray%20objectPoints,%20InputArray%20rvec,%20InputArray%20tvec,%20InputArray%20cameraMatrix,%20InputArray%20distCoeffs,%20OutputArray%20imagePoints,%20OutputArray%20jacobian,%20double%20aspectRatio))  
+[Programming Computer Vision with Python](http://programmingcomputervision.com/)
