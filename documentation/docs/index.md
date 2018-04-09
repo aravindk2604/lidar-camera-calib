@@ -125,3 +125,8 @@ distortion_coefficients: !!opencv-matrix
 - [ ] rectified image output
 
 The [rectified image output](../_videos/rectified_camera_output.mp4) video is placed inside the `_videos` directory.
+
+## Task 2. Camera -- LiDAR Cross Calibration  
+
+
+

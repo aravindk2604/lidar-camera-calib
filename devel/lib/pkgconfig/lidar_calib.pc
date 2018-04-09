@@ -1,0 +1,8 @@
+prefix=/home/ak/Git/lidar-camera-calib/devel
+
+Name: lidar_calib
+Description: Description of lidar_calib
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/ak/Git/lidar-camera-calib/devel/lib 
+Requires: roscpp rospy std_msgs sensor_msgs cv_bridge image_transport pcl_ros pcl_conversions

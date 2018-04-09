@@ -1,0 +1,4 @@
+<launch>
+<node pkg="tf" type="static_transform_publisher" name="camera_to_lidar" args="1 0 0 0 0 0 1 /camera_optical /velodyne 10" />
+
+</launch>
