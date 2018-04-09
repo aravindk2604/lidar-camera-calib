@@ -119,6 +119,7 @@ distortion_coefficients: !!opencv-matrix
 ```
 
 ##### TODO
+
 - [ ] explain image_proc
 - [ ] bag_tools used for recording new rosbag with camera calibration
 - [ ] unavailability of bag_tools for ROS Kinetic
@@ -127,6 +128,56 @@ distortion_coefficients: !!opencv-matrix
 The [rectified image output](../_videos/rectified_camera_output.mp4) video is placed inside the `_videos` directory.
 
 ## Task 2. Camera -- LiDAR Cross Calibration  
+
+The task is to overlay the LiDAR data onto the camera display and visualize it in rviz.  
+
+I thought about two apporaches for this task and chose the idea of triangulation technique.
+We need a co-relation between the 3D point cloud and the 2D image coordinates. I split this task in two:
+
+* Obtain the rotation and translation vectors between the LiDAR and the camera frames
+* Use the calculated rotation and translation vectors to find the 3D  `projected_points` on the image and draw circles to indicate those projected points on the camera display
+
+### Subtask 1. Rotation and Translation Vectors
+I arbitraily chose six 2D co-ordinates from the image frame and the corresponding 3D co-ordinates from the point cloud using RVIZ's `Publish Point` option. These six points comprised of the four corners of the checkerboard and the midpoint of the sides that are parallel to the ground. By this way I get the first relation between the LiDAR and the camera data. Although the other approach (idea #2) was certainly robust, the current idea can lead you to a good answer faster. Let's think of it like a sanity check.  
+
+In OpenCV there is a function called  [`cv::solvePnP`](https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html) that I used to calculate the rotation and the translation vectors. The six 2D co-ordinates and the 3D co-ordinates were hard-coded. As a definite improvement, instead of feeding an initial calues of all zeros for the rotation and translation vectors; a good estimation algorithm can be used to get a proper local minima that gives a relatively small error with the 3D projected points.  
+
+To find the projected points and analyse the error, another OpenCV function `cv::projectpoints` was used.  The C++ code `solvePnP.cpp` can be found [here](../src/lidar_calib/src/solvePnP.cpp).  
+
+### Subtask 2. Overlay the LiDAR data on the image topic (W.I.P)
+
+This is a ROS node that subscribes to the following:
+
+`/sensors/camera/image_rect_color`  
+`/sensors/camera/camera_info`  
+`/sensors/velodyne_points`
+
+and publishes the composite image on `/sensors/camera/lidar_image`.  
+The node subscibes to the LiDAR data from the modified rosbag and some processing is done on the `pcl::PointCloud2` data. The rosbag data format for the LiDAR is `sensor_msgs/PointCloud2`. I inspected the data using `rqt` another handy tool, and found that the data comprised of `pcl::PointCloudXYZI` type. 3D co-ordinates X, Y, Z and the intensity I.  
+
+Some processing is done on the PCL data to omit the negative x-axis values and to also limit the values in the positive x-axis between 0 and 4.5 meters away from the LiDAR. I did not do any downsampling as I felt the data was not that dense and can be managed easily.  
+
+Later, the X, Y, Z points are fed into the OpenCV function `cv::projectpoints`. The camera calibration parameters - camera intrinsic matrix, distortion co-efficients matrix, rotation and translation vectors were also utilised from the previous tasks.  
+
+[`cv_bridge`](http://wiki.ros.org/cv_bridge/Tutorials/UsingCvBridgeToConvertBetweenROSImagesAndOpenCVImages) package was helpful in converting between ROS Image msg -> CV Image -> ROS Image msg.  
+
+There are some more things necessary to finish this task. So far, the code compiles and data is printed on the modified composite camera image topic `/sensors/camera/lidar_image`, but apparently there is some error with the rotation vectors which makes the output not useful, when visualized through RVIZ. 
+
+###TODO 
+- [ ] use image_transport::CameraSubscriber for time synchronization between the topics subscribed from the rosbag
+- [ ] `cv::circle` populates and is retained longer which must be refreshed
+- [ ] appropriate pre-processing of LiDAR data axes
+
+The C++ ROS node can be found [here](../src/lidar_calib/src/lidar_Cam_Calibration.cpp).  
+
+A [snapshot](../_results/task2output.png) of the progressive output of Task 2 can be found in the `_results` directory. 
+
+![](_results/task2output.png)
+
+Clearly, there is a huge error with the rotation vector values computed and the mismatch of frames between camera and the LiDAR.
+
+
+
 
 
 

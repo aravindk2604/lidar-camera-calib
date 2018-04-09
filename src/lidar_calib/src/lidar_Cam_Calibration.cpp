@@ -31,7 +31,7 @@
 
 // Topics
 static const std::string LIDAR_TOPIC = "/sensors/velodyne_points";
-static const std::string IMG_TOPIC = "/sensors/camera/image_rect_color";
+static const std::string IMG_TOPIC = "/sensors/camera/image_color";
 static const std::string CAMERA_INFO = "/sensors/camera/camera_info";
 static const std::string COMPOSITE_IMG_OUT = "/sensors/camera/lidar_image"; // lidar points on camera image
 
@@ -172,7 +172,7 @@ public:
         pcl::PassThrough<pcl::PointXYZI> pass_x;
         pass_x.setInputCloud (cloud);
         pass_x.setFilterFieldName ("x");
-        pass_x.setFilterLimits (-4.5, 0.0); // zero to 4.5 meters on the +ve X-axis which is into the world
+        pass_x.setFilterLimits (0.0, 4.5); // zero to 4.5 meters on the +ve X-axis which is into the world
         pass_x.filter (*cloud_filtered);
 
 
