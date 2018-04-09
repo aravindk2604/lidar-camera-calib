@@ -52,21 +52,21 @@ int main( int argc, char* argv[])
   cv::Mat tvec(3,1,cv::DataType<double>::type);
 
 // values used from running after one iteration
-  tvec.at<double>(0) = -0.05937507;
-  tvec.at<double>(1) = -0.48187289; 
-  tvec.at<double>(2) = -0.26464405; 
+  // tvec.at<double>(0) = -0.05937507;
+  // tvec.at<double>(1) = -0.48187289; 
+  // tvec.at<double>(2) = -0.26464405; 
 
-  rvec.at<double>(0) = 5.41868013;
-  rvec.at<double>(1) = 4.49854285;
-  rvec.at<double>(2) = 2.46979746;
+  // rvec.at<double>(0) = 5.41868013;
+  // rvec.at<double>(1) = 4.49854285;
+  // rvec.at<double>(2) = 2.46979746;
 
-  //tvec.at<double>(0) = 0.4240347073463082;
-  //tvec.at<double>(1) = -0.09119832617429594; 
-  //tvec.at<double>(2) = -1.764738961137057; 
+  tvec.at<double>(0) = 0.4240347073463082;
+  tvec.at<double>(1) = -0.09119832617429594; 
+  tvec.at<double>(2) = -1.764738961137057; 
 
-  //rvec.at<double>(0) = 0.9533470811110965;
-  //rvec.at<double>(1) = -1.501583131508996;
-  //rvec.at<double>(2) = 1.513657927546317;
+  rvec.at<double>(0) = 0.9533470811110965;
+  rvec.at<double>(1) = -1.501583131508996;
+  rvec.at<double>(2) = 1.513657927546317;
  
   cv::solvePnP(objectPoints, imagePoints, cameraMatrix, distCoeffs, rvec, tvec, true, CV_ITERATIVE);
  
