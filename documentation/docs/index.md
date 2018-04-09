@@ -172,7 +172,7 @@ The C++ ROS node can be found [here](../src/lidar_calib/src/lidar_Cam_Calibratio
 
 A [snapshot](../_results/task2output.png) of the progressive output of Task 2 can be found in the `_results` directory. 
 
-![](_results/task2output.png)
+![](../_results/task2output.png)
 
 Clearly, there is a huge error with the rotation vector values computed and the mismatch of frames between camera and the LiDAR.
 
