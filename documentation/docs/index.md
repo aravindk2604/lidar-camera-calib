@@ -163,7 +163,7 @@ Later, the X, Y, Z points are fed into the OpenCV function `cv::projectpoints`. 
 
 There are some more things necessary to finish this task. So far, the code compiles and data is printed on the modified composite camera image topic `/sensors/camera/lidar_image`, but apparently there is some error with the rotation vectors which makes the output not useful, when visualized through RVIZ. 
 
-###TODO 
+#### TODO 
 - [ ] use image_transport::CameraSubscriber for time synchronization between the topics subscribed from the rosbag
 - [ ] `cv::circle` populates and is retained longer which must be refreshed
 - [ ] appropriate pre-processing of LiDAR data axes
@@ -172,7 +172,9 @@ The C++ ROS node can be found [here](../src/lidar_calib/src/lidar_Cam_Calibratio
 
 A [snapshot](../_results/task2output.png) of the progressive output of Task 2 can be found in the `_results` directory. 
 
-![](../_results/task2output.png)
+
+![](_results/task2output.png)
+
 
 Clearly, there is a huge error with the rotation vector values computed and the mismatch of frames between camera and the LiDAR.
 
