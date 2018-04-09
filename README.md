@@ -163,8 +163,14 @@ Later, the X, Y, Z points are fed into the OpenCV function `cv::projectpoints`. 
 
 There are some more things necessary to finish this task. So far, the code compiles and data is printed on the modified composite camera image topic `/sensors/camera/lidar_image`, but apparently there is some error with the rotation vectors which makes the output not useful, when visualized through RVIZ. 
 
+**Must use `image_geometry::PinholeCameraModel` to fetch the corrected camera paramters from the `CameraInfo` topic.**  
+
+**Also use `tf::TransformListener` to get the tf frames on the image** 
+
 #### TODO 
 - [ ] use image_transport::CameraSubscriber for time synchronization between the topics subscribed from the rosbag
+- [ ] `image_geometry::PinholeCameraModel`
+- [ ] `tf::TransformListener`
 - [ ] `cv::circle` populates and is retained longer which must be refreshed
 - [ ] appropriate pre-processing of LiDAR data axes
 
