@@ -2,6 +2,7 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <std_msgs/String.h>
+#include "image_geometry/pinhole_camera_model.h"
 #include <sensor_msgs/image_encodings.h>
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
@@ -44,7 +45,7 @@ class ImageConverter {
     ros::NodeHandle nh;
 
     image_transport::ImageTransport it_;
-    image_transport::Subscriber image_sub_; 
+    image_transport::CameraSubscriber image_sub_; 
     image_transport::Publisher image_pub_;
     cv::Mat cameraMatrix;
     cv::Mat distCoeffs, rvec, tvec;
@@ -59,7 +60,7 @@ public:
         lidar_sub = nh.subscribe(LIDAR_TOPIC, 1, &ImageConverter::lidarCb, this);
         
         // Subscibe to the camera video
-        image_sub_ = it_.subscribe(IMG_TOPIC, 1, &ImageConverter::imageCb, this);
+        image_sub_ = it_.subscribeCamera(IMG_TOPIC, 1, &ImageConverter::imageCb, this);
         image_pub_ = it_.advertise(COMPOSITE_IMG_OUT, 1);
 
 
@@ -126,7 +127,8 @@ public:
     }
 
 //////////////////////// Camera Image handling //////////////////////////////////////////
-    void imageCb(const sensor_msgs::ImageConstPtr& msg) {
+    void imageCb(const sensor_msgs::ImageConstPtr& msg, 
+                 const sensor_msgs::CameraInfoConstPtr& info_msg) {
         cv_bridge::CvImagePtr cv_ptr;
 
         try
