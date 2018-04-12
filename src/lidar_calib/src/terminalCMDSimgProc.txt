@@ -1,0 +1,10 @@
+ROS_NAMESPACE=sensors/camera rosrun image_proc image_proc
+
+rosrun image_view image_view image:=sensors/camera/image_rect_color
+
+
+rosrun tf view_frames
+
+<remap from="image" to="/sensors/camera/image_rect_color"/>
+<remap from="camera" to="/sensors/camera/camera_info"/>
+<remap from="velodyne" to="/sensors/velodyne_points"/>
