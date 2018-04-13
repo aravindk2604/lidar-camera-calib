@@ -32,20 +32,21 @@
 
 // Topics
 static const std::string LIDAR_TOPIC = "/sensors/velodyne_points";
-static const std::string IMG_TOPIC = "/sensors/camera/image_rect_color";
+static const std::string IMG_TOPIC = "/sensors/camera/image_color";
 static const std::string CAMERA_INFO = "/sensors/camera/camera_info";
 static const std::string COMPOSITE_IMG_OUT = "/sensors/camera/lidar_image"; // lidar points on camera image
 
-//static const std::string OPENCV_WINDOW = "Image window";
+static const std::string OPENCV_WINDOW = "Image window";
 
 
 
 class ImageConverter {
 
     ros::NodeHandle nh;
+    int count;
 
     image_transport::ImageTransport it_;
-    image_transport::CameraSubscriber image_sub_; 
+    image_transport::Subscriber image_sub_; 
     image_transport::Publisher image_pub_;
     cv::Mat cameraMatrix;
     cv::Mat distCoeffs, rvec, tvec;
@@ -60,11 +61,8 @@ public:
         lidar_sub = nh.subscribe(LIDAR_TOPIC, 1, &ImageConverter::lidarCb, this);
         
         // Subscibe to the camera video
-        image_sub_ = it_.subscribeCamera(IMG_TOPIC, 1, &ImageConverter::imageCb, this);
+        image_sub_ = it_.subscribe(IMG_TOPIC, 1, &ImageConverter::imageCb, this);
         image_pub_ = it_.advertise(COMPOSITE_IMG_OUT, 1);
-
-
-        
 
         cameraMatrix = cv::Mat(3,3,cv::DataType<double>::type);
         distCoeffs= cv::Mat(5,1,cv::DataType<double>::type);
@@ -90,101 +88,118 @@ public:
         distCoeffs.at<double>(3) = 1.2647206581812528e-03;
         distCoeffs.at<double>(4) = -2.7036330701899484e-02;
 
-        tvec.at<double>(0) = -0.05937507;
-        tvec.at<double>(1) = -0.48187289; 
-        tvec.at<double>(2) = -0.26464405;
 
-        // tvec.at<double>(0) = 0.05937507;
+// almost good
+        // tvec.at<double>(0) = -0.05937507;
         // tvec.at<double>(1) = -0.48187289; 
         // tvec.at<double>(2) = -0.26464405; 
 
-        rvec.at<double>(0) = 5.41868013;
-        rvec.at<double>(1) = 4.49854285;
-        rvec.at<double>(2) = 4.46979746;
+// almost good
+        // rvec.at<double>(0) = 5.41868013;
+        // rvec.at<double>(1) = 4.49854285;
+        // rvec.at<double>(2) = 2.46979746;
 
-        // rvec.at<double>(0) = 0;
-        // rvec.at<double>(1) = 0;
-        // rvec.at<double>(2) = 0;
 
-        // tvec.at<double>(0) = 0.4240347073463082;
-        // tvec.at<double>(1) = -0.09119832617429594; 
-        // tvec.at<double>(2) = -1.764738961137057; 
-
-        // rvec.at<double>(0) = 0.9533470811110965;
-        // rvec.at<double>(1) = 1.501583131508996;
-        // rvec.at<double>(2) = 1.513657927546317;
-
-      //  cv::namedWindow(OPENCV_WINDOW);
+        cv::namedWindow(OPENCV_WINDOW);
 
 // values obtained from task #1 camera calibration  
 
 
+ //  tvec.at<double>(0) = 0.3192214067855315;
+ //  tvec.at<double>(1) =  -1.066795755674321; 
+ //  tvec.at<double>(2) = -3.197155619420194; 
+
+ // rvec.at<double>(0) =   6.810895482760497;
+ //  rvec.at<double>(1) =  6.903274718145067;
+ //  rvec.at<double>(2) =  2.483162023330979;
+
+// best values
+        tvec.at<double>(0) = -0.4142752012282254;
+        tvec.at<double>(1) =   -0.3466738762524834; 
+        tvec.at<double>(2) = -3.365232380983624; 
+
+
+/// best values
+        rvec.at<double>(0) =     2.203427738539934  ;
+        rvec.at<double>(1) =   -0.04443768090240761 ;
+        rvec.at<double>(2) =   -1.886260535251167 ;
+        
+
+
+ // rvec.at<double>(0) =  8.358138515105635;
+ //  rvec.at<double>(1) =   5.217670625741007;
+ //  rvec.at<double>(2) =  3.545116283922075;
     } 
 
 // Destructor
     ~ImageConverter() {
-      // cv::destroyWindow(OPENCV_WINDOW);
-    }
+      cv::destroyWindow(OPENCV_WINDOW);
+  }
 
 //////////////////////// Camera Image handling //////////////////////////////////////////
-    void imageCb(const sensor_msgs::ImageConstPtr& msg, 
-                 const sensor_msgs::CameraInfoConstPtr& info_msg) {
-        cv_bridge::CvImagePtr cv_ptr;
+  void imageCb(const sensor_msgs::ImageConstPtr& msg) {
+    cv_bridge::CvImagePtr cv_ptr (new cv_bridge::CvImage);
 
-        try
-        {
-            cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
+    try
+    {
+        cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+    }
+    catch (cv_bridge::Exception& e)
+    {
+        ROS_ERROR("cv_bridge exception: %s", e.what());
+        return;
+    }
 
-        cv::projectPoints(objectPoints, rvec, tvec, cameraMatrix, distCoeffs, projectedPoints);
+    cv::projectPoints(objectPoints, rvec, tvec, cameraMatrix, distCoeffs, projectedPoints);
 
-        for(size_t i = 0; i< projectedPoints.size(); ++i) {
-            //ROS_INFO_STREAM ("PPsize: " << projectedPoints.size());
-            if(projectedPoints[i].x >= 0 && projectedPoints[i].x < IMAGE_WIDTH && projectedPoints[i].y >= 0 && projectedPoints[i].y <IMAGE_HEIGHT)
-            {   
+
+
+    for(size_t i = 0; i< projectedPoints.size(); ++i) {
+          //  ROS_INFO_STREAM ("PPsize: " << projectedPoints.size());
+        if(projectedPoints[i].x >= 0 && projectedPoints[i].x <= IMAGE_WIDTH && projectedPoints[i].y >= 0 && projectedPoints[i].y <= IMAGE_HEIGHT)
+        {   
                 // draw circles on all the projectedPoints to represent the lidar data
-                cv::circle(cv_ptr->image, cv::Point((int)projectedPoints[i].x,(int)projectedPoints[i].y), 4, CV_RGB(255,0,0));
-                //ROS_INFO_STREAM(" x " << projectedPoints[i].x << " y " << projectedPoints[i].y);
-                //cv::imshow(OPENCV_WINDOW,cv_ptr->image);
-                //cv::waitKey(3);
-                sensor_msgs::ImagePtr convertedMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_ptr->image).toImageMsg();
-                image_pub_.publish(convertedMsg);
-            }   
+            cv::circle(cv_ptr->image, cv::Point((int)projectedPoints[i].y,(int)projectedPoints[i].x), 4, CV_RGB(255,0,0));
+           // ROS_INFO_STREAM(" x " << objectPoints[i].x << " y " << objectPoints[i].y << " z " << objectPoints[i].z );//<< " y " << (int)projectedPoints[i].y);
 
+               // sensor_msgs::ImagePtr convertedMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_ptr->image).toImageMsg();
+               // image_pub_.publish(convertedMsg);
         }
+
+
+    }
+    cv::imshow(OPENCV_WINDOW,cv_ptr->image);
+    cv::waitKey(1);
+
 
         //sensor_msgs::ImagePtr convertedMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_ptr->image).toImageMsg();
         //image_pub_.publish(convertedMsg);
 
-    }
+}
 ////////////////////////////// LiDAR Point Cloud processing //////////////////////////////////
-    void lidarCb(const sensor_msgs::PointCloud2ConstPtr& pointCloudMsg) {
+void lidarCb(const sensor_msgs::PointCloud2ConstPtr& pointCloudMsg) {
 
-        pcl::PointCloud<pcl::PointXYZI>::Ptr  cloud (new pcl::PointCloud<pcl::PointXYZI>);
-        pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZI>);
-        pcl::fromROSMsg (*pointCloudMsg, *cloud);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr  cloud (new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::fromROSMsg (*pointCloudMsg, *cloud);
 
 
     // Create the filtering object
-        pcl::PassThrough<pcl::PointXYZI> pass_x;
-        pass_x.setInputCloud (cloud);
-        pass_x.setFilterFieldName ("x");
-        pass_x.setFilterLimits (0.0, 4.5); // zero to 4.5 meters on the +ve X-axis which is into the world
-        pass_x.filter (*cloud_filtered);
+    pcl::PassThrough<pcl::PointXYZI> pass_x;
+    pass_x.setInputCloud (cloud);
+    pass_x.setFilterFieldName ("x");
+    pass_x.setFilterLimits (0.0, 4.0); // zero to 4.5 meters on the +ve X-axis which is into the world
+    pass_x.filter (*cloud_filtered);
 
-
+    objectPoints.clear();
     for (size_t i = 0; i < cloud_filtered->size(); ++i)
     {
         objectPoints.push_back(cv::Point3f(cloud_filtered->points[i].x, cloud_filtered->points[i].y,
-           cloud_filtered->points[i].z));
+         cloud_filtered->points[i].z));
 
         //ROS_INFO_STREAM("X: " << cloud_filtered->points[i].x << "  Y: "<< cloud_filtered->points[i].y << "  Z: "<< cloud_filtered->points[i].z);
     }
+
 }
 
 }; // end of class ImageConverter

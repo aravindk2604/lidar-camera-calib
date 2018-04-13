@@ -21,6 +21,8 @@ int main( int argc, char* argv[])
  
   std::cout << "There are " << imagePoints.size() << " imagePoints and " << objectPoints.size() << " objectPoints." << std::endl;
   cv::Mat cameraMatrix(3,3,cv::DataType<double>::type);
+  cv::Mat xyz(3,3,cv::DataType<double>::type);
+
   //cv::setIdentity(cameraMatrix);
 
 // values obtained from task #1 camera calibration  
@@ -49,6 +51,8 @@ int main( int argc, char* argv[])
   
 
   cv::Mat rvec(3,1,cv::DataType<double>::type);
+  cv::Mat abc(3,1,cv::DataType<double>::type);
+
   cv::Mat tvec(3,1,cv::DataType<double>::type);
 
 // values used from running after one iteration
@@ -60,19 +64,65 @@ int main( int argc, char* argv[])
   // rvec.at<double>(1) = 4.49854285;
   // rvec.at<double>(2) = 2.46979746;
 
-  tvec.at<double>(0) = 0.4240347073463082;
-  tvec.at<double>(1) = -0.09119832617429594; 
-  tvec.at<double>(2) = -1.764738961137057; 
+  // tvec.at<double>(0) = 0.4240347073463082;
+  // tvec.at<double>(1) = -0.09119832617429594; 
+  // tvec.at<double>(2) = -1.764738961137057; 
 
-  rvec.at<double>(0) = 0.9533470811110965;
-  rvec.at<double>(1) = -1.501583131508996;
-  rvec.at<double>(2) = 1.513657927546317;
+  // rvec.at<double>(0) = 0.9533470811110965;
+  // rvec.at<double>(1) = -1.501583131508996;
+  // rvec.at<double>(2) = 1.513657927546317;
+
+
+  ///
+   tvec.at<double>(0) = -0.4142752012282254;
+  tvec.at<double>(1) =   -0.3466738762524834; 
+ 
+  tvec.at<double>(2) = -3.365232380983624; 
+
+ // rvec.at<double>(0) =  8.358138515105635;
+ //  rvec.at<double>(1) =   5.217670625741007;
+ //  rvec.at<double>(2) =  3.545116283922075;
+
+
+  rvec.at<double>(0) =     2.203427738539934;
+  rvec.at<double>(1) =   -0.04443768090240761;
+  rvec.at<double>(2) =   -1.886260535251167;
+
+
+  xyz.at<double>(0, 0) = -0.1661058;
+  xyz.at<double>(0, 1) = -0.1320840;
+  xyz.at<double>(0, 2) = -0.9772219;
+  xyz.at<double>(1, 0) = 0.1779559;
+  xyz.at<double>(1, 1) = 0.9707034;
+  xyz.at<double>(1, 2) = -0.1614515;
+  xyz.at<double>(2, 0) = 0.9699178;
+  xyz.at<double>(2, 1) = -0.2007205;
+  xyz.at<double>(2, 2) = -0.1377343;
+
+cv::Rodrigues(xyz, abc);
+ 
  
   cv::solvePnP(objectPoints, imagePoints, cameraMatrix, distCoeffs, rvec, tvec, true, CV_ITERATIVE);
  
   std::cout << "rvec: " << rvec << std::endl;
+
   std::cout << "tvec: " << tvec << std::endl;
  
+  std::cout << "abc: " << abc << std::endl;
+
+
+  // tvec.at<double>(0) = 0.3192214067855315;
+  // tvec.at<double>(1) =  -1.066795755674321; 
+  // tvec.at<double>(2) = -3.197155619420194 
+
+ // rvec.at<double>(0) =   6.810895482760497;
+  // rvec.at<double>(1) =  6.903274718145067;
+  // rvec.at<double>(2) =  2.483162023330979
+
+
+
+
+
   std::vector<cv::Point2f> projectedPoints;
   cv::projectPoints(objectPoints, rvec, tvec, cameraMatrix, distCoeffs, projectedPoints);
  
