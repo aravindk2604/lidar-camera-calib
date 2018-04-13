@@ -55,8 +55,8 @@ class ImageConverter {
 
 
 
-    // cv::Mat cameraMatrix;
-    // cv::Mat distCoeffs, rvec, tvec;
+    cv::Mat cameraMatrix, rotationMatrix;
+    cv::Mat distCoeffs, rvec, tvec;
     ros::Subscriber lidar_sub;
 
     std::vector<cv::Point3d> objectPoints;
@@ -71,56 +71,45 @@ public:
         image_sub_ = it_.subscribeCamera(IMG_TOPIC, 1, &ImageConverter::imageCb, this);
         image_pub_ = it_.advertise(COMPOSITE_IMG_OUT, 1);
 
-
-        
-
-        // cameraMatrix = cv::Mat(3,3,cv::DataType<double>::type);
-        // distCoeffs= cv::Mat(5,1,cv::DataType<double>::type);
-        // rvec = cv::Mat(3,1,cv::DataType<double>::type); // rotation vector      
-        // tvec = cv::Mat(3,1,cv::DataType<double>::type); // translation vector
-
+        cameraMatrix = cv::Mat(3,3,cv::DataType<double>::type);
+        distCoeffs= cv::Mat(5,1,cv::DataType<double>::type);
+        rvec = cv::Mat(3,1,cv::DataType<double>::type); // rotation vector      
+        tvec = cv::Mat(3,1,cv::DataType<double>::type); // translation vector
+        rotationMatrix = cv::Mat(3,3,cv::DataType<double>::type);
 // values obtained from task #1 camera calibration
-        // cameraMatrix.at<double>(0, 0) = 4.8500013227778845e+02;
-        // cameraMatrix.at<double>(0, 1) = 0.;
-        // cameraMatrix.at<double>(0, 2) = 4.6048439978206324e+02;
-        // cameraMatrix.at<double>(1, 0) = 0.;
-        // cameraMatrix.at<double>(1, 1) = 4.8446529771202120e+02;
-        // cameraMatrix.at<double>(1, 2) = 3.6882717135520573e+02;
-        // cameraMatrix.at<double>(2, 0) = 0.;
-        // cameraMatrix.at<double>(2, 1) = 0.;
-        // cameraMatrix.at<double>(2, 2) = 1.;
+        cameraMatrix.at<double>(0, 0) = 4.8500013227778845e+02;
+        cameraMatrix.at<double>(0, 1) = 0.;
+        cameraMatrix.at<double>(0, 2) = 4.6048439978206324e+02;
+        cameraMatrix.at<double>(1, 0) = 0.;
+        cameraMatrix.at<double>(1, 1) = 4.8446529771202120e+02;
+        cameraMatrix.at<double>(1, 2) = 3.6882717135520573e+02;
+        cameraMatrix.at<double>(2, 0) = 0.;
+        cameraMatrix.at<double>(2, 1) = 0.;
+        cameraMatrix.at<double>(2, 2) = 1.;
 
 
 // values obtained from task #1 camera calibration
-        // distCoeffs.at<double>(0) = -2.1897207538791941e-01;
-        // distCoeffs.at<double>(1) = 1.1378088445810178e-01;
-        // distCoeffs.at<double>(2) = 2.7963672438432903e-03;
-        // distCoeffs.at<double>(3) = 1.2647206581812528e-03;
-        // distCoeffs.at<double>(4) = -2.7036330701899484e-02;
+        distCoeffs.at<double>(0) = -2.1897207538791941e-01;
+        distCoeffs.at<double>(1) = 1.1378088445810178e-01;
+        distCoeffs.at<double>(2) = 2.7963672438432903e-03;
+        distCoeffs.at<double>(3) = 1.2647206581812528e-03;
+        distCoeffs.at<double>(4) = -2.7036330701899484e-02;
 
-        // tvec.at<double>(0) = -0.05937507;
-        // tvec.at<double>(1) = -0.48187289; 
-        // tvec.at<double>(2) = -0.26464405;
+        tvec.at<double>(0) = -0.05937507;
+        tvec.at<double>(1) = -0.48187289; 
+        tvec.at<double>(2) = -0.26464405;
 
         // tvec.at<double>(0) = 0.05937507;
         // tvec.at<double>(1) = -0.48187289; 
         // tvec.at<double>(2) = -0.26464405; 
 
-        // rvec.at<double>(0) = 5.41868013;
-        // rvec.at<double>(1) = 4.49854285;
-        // rvec.at<double>(2) = 4.46979746;
+        rvec.at<double>(0) = 5.41868013;
+        rvec.at<double>(1) = 4.49854285;
+        rvec.at<double>(2) = 4.46979746;
 
-        // rvec.at<double>(0) = 0;
-        // rvec.at<double>(1) = 0;
-        // rvec.at<double>(2) = 0;
+        cv::Rodrigues(rvec, )
 
-        // tvec.at<double>(0) = 0.4240347073463082;
-        // tvec.at<double>(1) = -0.09119832617429594; 
-        // tvec.at<double>(2) = -1.764738961137057; 
-
-        // rvec.at<double>(0) = 0.9533470811110965;
-        // rvec.at<double>(1) = 1.501583131508996;
-        // rvec.at<double>(2) = 1.513657927546317;
+        
 
       //  cv::namedWindow(OPENCV_WINDOW);
 
