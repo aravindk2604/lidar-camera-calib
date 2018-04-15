@@ -59,6 +59,16 @@ int main( int argc, char* argv[])
   // tvec.at<double>(0) = -0.05937507;
   // tvec.at<double>(1) = -0.48187289; 
   // tvec.at<double>(2) = -0.26464405; 
+////////////////////////////////////////////////////
+  //  rvec.at<double>(0) =   2.46979746;
+  // rvec.at<double>(1) =  4.49854285;
+  // rvec.at<double>(2) =  5.41868013;
+
+
+//////////////////////////////////////////////////
+
+
+
 
   // rvec.at<double>(0) = 5.41868013;
   // rvec.at<double>(1) = 4.49854285;
@@ -74,22 +84,32 @@ int main( int argc, char* argv[])
 
 
   ///
-   tvec.at<double>(0) = -0.4142752012282254;
-  tvec.at<double>(1) =   -0.3466738762524834; 
+  //  tvec.at<double>(0) = -0.4142752012282254;
+  // tvec.at<double>(1) =   -0.3466738762524834; 
  
-  tvec.at<double>(2) = -3.365232380983624; 
+  // tvec.at<double>(2) = -3.365232380983624; 
 
  // rvec.at<double>(0) =  8.358138515105635;
  //  rvec.at<double>(1) =   5.217670625741007;
  //  rvec.at<double>(2) =  3.545116283922075;
 
 
-  rvec.at<double>(0) =     2.203427738539934;
-  rvec.at<double>(1) =   -0.04443768090240761;
-  rvec.at<double>(2) =   -1.886260535251167;
+  // rvec.at<double>(0) =     2.203427738539934;
+  // rvec.at<double>(1) =   -0.04443768090240761;
+  // rvec.at<double>(2) =   -1.886260535251167;
 
 
-  xyz.at<double>(0, 0) = -0.1661058;
+  
+
+  tvec.at<double>(0) = 0.3192214067855315;
+  tvec.at<double>(1) =  -1.066795755674321; 
+  tvec.at<double>(2) = -3.197155619420194 ;
+
+ rvec.at<double>(0) =   2.483162023330979;
+  rvec.at<double>(1) =  6.903274718145067;
+  rvec.at<double>(2) =  6.810895482760497;
+
+xyz.at<double>(0, 0) = -0.1661058;
   xyz.at<double>(0, 1) = -0.1320840;
   xyz.at<double>(0, 2) = -0.9772219;
   xyz.at<double>(1, 0) = 0.1779559;
@@ -111,16 +131,6 @@ cv::Rodrigues(xyz, abc);
   std::cout << "abc: " << abc << std::endl;
 
 
-  // tvec.at<double>(0) = 0.3192214067855315;
-  // tvec.at<double>(1) =  -1.066795755674321; 
-  // tvec.at<double>(2) = -3.197155619420194 
-
- // rvec.at<double>(0) =   6.810895482760497;
-  // rvec.at<double>(1) =  6.903274718145067;
-  // rvec.at<double>(2) =  2.483162023330979
-
-
-
 
 
   std::vector<cv::Point2f> projectedPoints;
@@ -130,6 +140,9 @@ cv::Rodrigues(xyz, abc);
     {
     std::cout << "Image point: " << imagePoints[i] << " Projected to " << projectedPoints[i] << std::endl;
     }
+
+
+    std::cout << "obj: " << objectPoints.size() << " img: " << projectedPoints.size() << std::endl;
 
   //cv::Rodrigues()
  

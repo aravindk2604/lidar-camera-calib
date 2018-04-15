@@ -54,6 +54,7 @@ class ImageConverter {
 
     std::vector<cv::Point3d> objectPoints;
     std::vector<cv::Point2d> projectedPoints;
+    // std::vector<cv::Point2d> imagePoints;
 
 public:
     ImageConverter() : it_(nh) { 
@@ -105,18 +106,19 @@ public:
 // values obtained from task #1 camera calibration  
 
 
- //  tvec.at<double>(0) = 0.3192214067855315;
- //  tvec.at<double>(1) =  -1.066795755674321; 
- //  tvec.at<double>(2) = -3.197155619420194; 
+ //  tvec.at<double>(0) = -0.05937507;
+ //  tvec.at<double>(1) =  -0.48187289; 
+ //  tvec.at<double>(2) = -0.26464405; 
 
- // rvec.at<double>(0) =   6.810895482760497;
- //  rvec.at<double>(1) =  6.903274718145067;
- //  rvec.at<double>(2) =  2.483162023330979;
+ // rvec.at<double>(0) =   2.46979746;
+ //  rvec.at<double>(1) =  4.49854285;
+ //  rvec.at<double>(2) =  5.41868013;
 
 // best values
         tvec.at<double>(0) = -0.4142752012282254;
         tvec.at<double>(1) =   -0.3466738762524834; 
-        tvec.at<double>(2) = -3.365232380983624; 
+        tvec.at<double>(2) = -0.365232380983624;  // make this -0.3652323... to get a much nicer translation
+
 
 
 /// best values
@@ -124,12 +126,22 @@ public:
         rvec.at<double>(1) =   -0.04443768090240761 ;
         rvec.at<double>(2) =   -1.886260535251167 ;
         
+/// best values experimental (exchanges 0th and 2nd term)
+        // rvec.at<double>(0) =    -1.886260535251167;
+        // rvec.at<double>(1) =   -0.04443768090240761 ;
+        // rvec.at<double>(2) =     2.203427738539934;
+        
 
-
- // rvec.at<double>(0) =  8.358138515105635;
- //  rvec.at<double>(1) =   5.217670625741007;
- //  rvec.at<double>(2) =  3.545116283922075;
+ //  tvec.at<double>(0) = 1.304072080859504;
+ //  tvec.at<double>(1) = 0.2535240915074506; 
+ //  tvec.at<double>(2) = -2.613783759896349;
+ // rvec.at<double>(0) =   6.636882258927172;
+ //  rvec.at<double>(1) =   6.989955007841854;
+ //  rvec.at<double>(2) = 2.870352883919152;
     } 
+
+
+
 
 // Destructor
     ~ImageConverter() {
@@ -152,6 +164,7 @@ public:
 
     cv::projectPoints(objectPoints, rvec, tvec, cameraMatrix, distCoeffs, projectedPoints);
 
+    //ROS_INFO_STREAM ("Lid: " << objectPoints.size() << " img: " << projectedPoints.size());
 
 
     for(size_t i = 0; i< projectedPoints.size(); ++i) {
@@ -159,7 +172,7 @@ public:
         if(projectedPoints[i].x >= 0 && projectedPoints[i].x <= IMAGE_WIDTH && projectedPoints[i].y >= 0 && projectedPoints[i].y <= IMAGE_HEIGHT)
         {   
                 // draw circles on all the projectedPoints to represent the lidar data
-            cv::circle(cv_ptr->image, cv::Point((int)projectedPoints[i].y,(int)projectedPoints[i].x), 4, CV_RGB(255,0,0));
+            cv::circle(cv_ptr->image, cv::Point(IMAGE_HEIGHT - (int)projectedPoints[i].y, IMAGE_WIDTH - (int)projectedPoints[i].x), 4, CV_RGB(255,0,0));
            // ROS_INFO_STREAM(" x " << objectPoints[i].x << " y " << objectPoints[i].y << " z " << objectPoints[i].z );//<< " y " << (int)projectedPoints[i].y);
 
                // sensor_msgs::ImagePtr convertedMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_ptr->image).toImageMsg();
@@ -188,14 +201,14 @@ void lidarCb(const sensor_msgs::PointCloud2ConstPtr& pointCloudMsg) {
     pcl::PassThrough<pcl::PointXYZI> pass_x;
     pass_x.setInputCloud (cloud);
     pass_x.setFilterFieldName ("x");
-    pass_x.setFilterLimits (0.0, 4.0); // zero to 4.5 meters on the +ve X-axis which is into the world
+    pass_x.setFilterLimits (0.0, 4.5); // zero to 4.5 meters on the +ve X-axis which is into the world
     pass_x.filter (*cloud_filtered);
 
     objectPoints.clear();
     for (size_t i = 0; i < cloud_filtered->size(); ++i)
     {
         objectPoints.push_back(cv::Point3f(cloud_filtered->points[i].x, cloud_filtered->points[i].y,
-         cloud_filtered->points[i].z));
+           cloud_filtered->points[i].z));
 
         //ROS_INFO_STREAM("X: " << cloud_filtered->points[i].x << "  Y: "<< cloud_filtered->points[i].y << "  Z: "<< cloud_filtered->points[i].z);
     }
