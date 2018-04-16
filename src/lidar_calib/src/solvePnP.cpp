@@ -101,23 +101,40 @@ int main( int argc, char* argv[])
 
   
 
-  tvec.at<double>(0) = 0.3192214067855315;
-  tvec.at<double>(1) =  -1.066795755674321; 
-  tvec.at<double>(2) = -3.197155619420194 ;
+  // tvec.at<double>(0) = 0.3192214067855315;
+  // tvec.at<double>(1) =  -1.066795755674321; 
+  // tvec.at<double>(2) = -3.197155619420194 ;
 
- rvec.at<double>(0) =   2.483162023330979;
-  rvec.at<double>(1) =  6.903274718145067;
-  rvec.at<double>(2) =  6.810895482760497;
+ // rvec.at<double>(0) =   2.483162023330979;
+ //  rvec.at<double>(1) =  6.903274718145067;
+ //  rvec.at<double>(2) =  6.810895482760497;
 
-xyz.at<double>(0, 0) = -0.1661058;
-  xyz.at<double>(0, 1) = -0.1320840;
-  xyz.at<double>(0, 2) = -0.9772219;
-  xyz.at<double>(1, 0) = 0.1779559;
-  xyz.at<double>(1, 1) = 0.9707034;
-  xyz.at<double>(1, 2) = -0.1614515;
-  xyz.at<double>(2, 0) = 0.9699178;
-  xyz.at<double>(2, 1) = -0.2007205;
-  xyz.at<double>(2, 2) = -0.1377343;
+
+  //  rvec.at<double>(0) =  -1.209199576156146;
+  // rvec.at<double>(1) =  -1.209199576156146;
+  // rvec.at<double>(2) = -1.209199576156146;
+
+
+
+  tvec.at<double>(0) = -0.8;
+  tvec.at<double>(1) =  1.2; 
+  tvec.at<double>(2) =  -0.5;
+ rvec.at<double>(0) =  -1.209199576156146;
+  rvec.at<double>(1) =  -1.209199576156146;
+  rvec.at<double>(2) = -1.209199576156146;
+
+
+
+
+  xyz.at<double>(0, 0) = 0;
+  xyz.at<double>(0, 1) = 1;
+  xyz.at<double>(0, 2) = 0;
+  xyz.at<double>(1, 0) = 0;
+  xyz.at<double>(1, 1) = 0;
+  xyz.at<double>(1, 2) = 1;
+  xyz.at<double>(2, 0) = 1;
+  xyz.at<double>(2, 1) = 0;
+  xyz.at<double>(2, 2) = 0;
 
 cv::Rodrigues(xyz, abc);
  

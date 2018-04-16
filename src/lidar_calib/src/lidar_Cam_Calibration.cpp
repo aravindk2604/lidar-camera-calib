@@ -132,12 +132,14 @@ public:
         // rvec.at<double>(2) =     2.203427738539934;
         
 
- //  tvec.at<double>(0) = 1.304072080859504;
- //  tvec.at<double>(1) = 0.2535240915074506; 
- //  tvec.at<double>(2) = -2.613783759896349;
- // rvec.at<double>(0) =   6.636882258927172;
- //  rvec.at<double>(1) =   6.989955007841854;
- //  rvec.at<double>(2) = 2.870352883919152;
+ //  tvec.at<double>(0) = -0.8;
+ //  tvec.at<double>(1) =  1.2; 
+ //  tvec.at<double>(2) =  -0.5;
+ // rvec.at<double>(0) =  -1.209199576156146;
+ //  rvec.at<double>(1) =  -1.209199576156146;
+ //  rvec.at<double>(2) = -1.209199576156146;
+        
+
     } 
 
 
@@ -185,8 +187,8 @@ public:
     cv::waitKey(1);
 
 
-        //sensor_msgs::ImagePtr convertedMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_ptr->image).toImageMsg();
-        //image_pub_.publish(convertedMsg);
+    sensor_msgs::ImagePtr convertedMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_ptr->image).toImageMsg();
+    image_pub_.publish(convertedMsg);
 
 }
 ////////////////////////////// LiDAR Point Cloud processing //////////////////////////////////
@@ -201,14 +203,14 @@ void lidarCb(const sensor_msgs::PointCloud2ConstPtr& pointCloudMsg) {
     pcl::PassThrough<pcl::PointXYZI> pass_x;
     pass_x.setInputCloud (cloud);
     pass_x.setFilterFieldName ("x");
-    pass_x.setFilterLimits (0.0, 4.5); // zero to 4.5 meters on the +ve X-axis which is into the world
+    pass_x.setFilterLimits (-2.0, 4.5); // zero to 4.5 meters on the +ve X-axis which is into the world
     pass_x.filter (*cloud_filtered);
 
     objectPoints.clear();
     for (size_t i = 0; i < cloud_filtered->size(); ++i)
     {
         objectPoints.push_back(cv::Point3f(cloud_filtered->points[i].x, cloud_filtered->points[i].y,
-           cloud_filtered->points[i].z));
+         cloud_filtered->points[i].z));
 
         //ROS_INFO_STREAM("X: " << cloud_filtered->points[i].x << "  Y: "<< cloud_filtered->points[i].y << "  Z: "<< cloud_filtered->points[i].z);
     }

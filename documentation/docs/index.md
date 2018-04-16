@@ -129,6 +129,39 @@ The [rectified image output](../_videos/rectified_camera_output.mp4) video is pl
 
 ## Task 2. Camera -- LiDAR Cross Calibration  
 
+The quick method to check if there is a possibility to arrive at an answer.  
+Publish a `static_transform` and use RVIZ's camera overlay option to find out this possibility.  
+
+![](_results/quickCheckRviz.png)  
+
+How to get this on rviz is by following:  
+
+Terminal 1:
+
+```
+$ roscore
+```
+Terminal 2:
+
+```
+$ rosrun tf static_transform_publisher 1 0 0 1.5708 3.14159 1.5708 velodyne camera_optical 10
+```
+
+Terminal 3:
+
+```
+$ rosparam set use_sim_time true
+$ rosrun rviz rviz
+```
+
+Terminal 4:
+
+```
+$ rosbag play -l yourBagFile.bag --clock
+```
+
+
+
 The task is to overlay the LiDAR data onto the camera display and visualize it in rviz.  
 
 I thought about two apporaches for this task and chose the idea of triangulation technique.
@@ -157,7 +190,14 @@ The node subscibes to the LiDAR data from the modified rosbag and some processin
 
 Some processing is done on the PCL data to omit the negative x-axis values and to also limit the values in the positive x-axis between 0 and 4.5 meters away from the LiDAR. I did not do any downsampling as I felt the data was not that dense and can be managed easily.  
 
-Later, the X, Y, Z points are fed into the OpenCV function `cv::projectpoints`. The camera calibration parameters - camera intrinsic matrix, distortion co-efficients matrix, rotation and translation vectors were also utilised from the previous tasks.  
+Later, the X, Y, Z points are fed into the OpenCV function `cv::projectpoints`. The camera calibration parameters - camera intrinsic matrix, distortion co-efficients matrix, rotation and translation vectors were also utilised from the previous tasks. 
+
+Here is an image of a partial output for this task
+
+![](_results/updatedTask2output.png)
+
+
+A video of the partial output can be found [here](https://www.youtube.com/watch?v=30VkTsPEkds)
 
 [`cv_bridge`](http://wiki.ros.org/cv_bridge/Tutorials/UsingCvBridgeToConvertBetweenROSImagesAndOpenCVImages) package was helpful in converting between ROS Image msg -> CV Image -> ROS Image msg.  
 
