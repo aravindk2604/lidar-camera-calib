@@ -218,6 +218,17 @@ A [snapshot](../_results/task2output.png) of the progressive output of Task 2 ca
 
 Clearly, there is a huge error with the rotation vector values computed and the mismatch of frames between camera and the LiDAR.
 
+---
+
+#### Update on Task 2  
+
+After a good amount of research on `tf` in ROS, I was able to get the LiDAR data projected on the image frame with a little offset in the transformation.
+
+![](_results/trial3_task2.png)  
+
+A video of the new output can be found in this [YouTube link](https://youtu.be/fG1fqfM8xJo).
+
+---
 
 ## Task 3. Visualize RGB data from the camera as a point cloud in RVIZ
 
