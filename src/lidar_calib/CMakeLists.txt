@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   pcl_ros 
   pcl_conversions
+  tf2_ros
 
 )
 
@@ -114,7 +115,7 @@ find_package(OpenCV 3 REQUIRED)
 catkin_package(
 INCLUDE_DIRS
 #  LIBRARIES lidar_calib
-CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs cv_bridge image_geometry image_transport pcl_ros pcl_conversions
+CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs cv_bridge image_geometry image_transport pcl_ros pcl_conversions tf2_ros
 #  DEPENDS system_lib
 )
 
