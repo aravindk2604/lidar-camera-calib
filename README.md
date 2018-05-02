@@ -1,3 +1,7 @@
+
+[![LiDAR data projected on Image frame](_results/task2output.png)](https://youtu.be/fG1fqfM8xJo)
+
+
 # Documentation on the LiDAR-Camera Calibration
 
 There are three tasks to be completed.  
