@@ -1,19 +1,19 @@
 <launch>
 		<param name="/use_sim_time" value="true" />
 		
-		<node name="rosbag" pkg="rosbag" type="play" args=" -l -r 0.3 --clock /home/ak/Git/new_rectified.bag" />
+		<node name="rosbag" pkg="rosbag" type="play" args=" -l --clock /home/ak/Git/new_rectified.bag" />
 		
 		<node name="image_proc" pkg="image_proc" type="image_proc" respawn="false" ns="/sensors/camera">
 			<remap from="image_raw" to="image_rect_color" />
 		</node>
 
-		<node name="tf" pkg="tf" type="static_transform_publisher" args="-0.05937507 -0.48187289 -0.26464405  5.41868013  4.49854285 2.46979746 velodyne camera_optical 10" />
+		<node name="tf" pkg="tf" type="static_transform_publisher" args="0.8 -0.35 0 1.5708 3.14159 1.5708 velodyne camera_optical 10" />
 
 		<node name="lidar_calibration" pkg="lidar_calib" type="lidar_calibration" args="">
-			<remap from="image" to="/sensors/camera/image_rect_color" />
-			<remap from="lidar_image" to="/sensors/camera/lidar_image" />
-			<remap from="camera" to="/sensors/camera/camera_info" />
-			<remap from="velodyne" to="/sensors/velodyne_points" /> 
+			<!-- remap from="image" to="/sensors/camera/image_rect_color" / -->
+			<!-- remap from="lidar_image" to="/sensors/camera/lidar_image" / -->
+			<!-- remap from="camera" to="/sensors/camera/camera_info" / -->
+			<!-- remap from="velodyne" to="/sensors/velodyne_points" / --> 
 		</node>
 
 </launch>

@@ -40,7 +40,7 @@
 
 // Topics
 static const std::string LIDAR_TOPIC = "/sensors/velodyne_points";
-static const std::string IMG_TOPIC = "/sensors/camera/image_color";
+static const std::string IMG_TOPIC = "/sensors/camera/image_rect_color";
 static const std::string CAMERA_INFO = "/sensors/camera/camera_info";
 static const std::string COMPOSITE_IMG_OUT = "/sensors/camera/lidar_image"; // lidar points on camera image
 
@@ -156,7 +156,9 @@ public:
 		pt_transformed.clear();
 		cv::imshow(OPENCV_WINDOW,cv_ptr->image);
 		cv::waitKey(1);
-	//}
+
+		sensor_msgs::ImagePtr convertedMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_ptr->image).toImageMsg();
+        image_pub_.publish(convertedMsg);
 
 	}
 	///////////////////////////////////// LIDAR CALLBACK //////////////////////////////
