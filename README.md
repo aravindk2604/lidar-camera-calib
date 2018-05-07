@@ -14,7 +14,7 @@ Clone the repo, download the rosbag from [here](https://drive.google.com/open?id
 
 > You have to edit the location of the rosbag; pointing to wherever it is on your system, in the `lidar_composite.launch` file inside the `lidar-calib` package
 
-# Run
+# Run - Task 2 Camera-LiDAR calibration
 
 ```
 cd lidar-camera-calib/
@@ -26,9 +26,35 @@ roslaunch lidar_calib lidar_composite.launch
 
 You should see an image window pop-up showing the video of the LiDAR points projected on the image frame. 
 
-You can also visualize the LiDAR and the composite lidar image data on rviz. 
+You can also visualize the LiDAR and the composite lidar image data on rviz.  
 
-A writeup of this project is located [here](documentation/docs/index.md)
+# Run - Task 3 RGB Point Cloud Data Visualization
+
+[![RGB Point Cloud Visualization on RVIZ](_results/task3_vid.png)](https://youtu.be/fTRS81-PgBw)
+
+
+```
+cd lidar-camera-calib/
+catkin_make
+source devel/setup.bash
+roslaunch lidar_calib rgb_lidar.launch
+
+```
+
+This can be visualized on rviz by running
+
+```
+rosrun rviz rviz
+```
+
+> Make sure to add the PointCloud2 topic `rgb_output` and set the size of the Flat Squares to atleast `0.08` to properly get the output.
+
+> The transformation is still not accurate and thus the output is average, which can be improved.
+
+A writeup of this project is located [here](documentation/docs/index.md)  
+  
+
+  
 
 I referred the following articles:
 [Processing Camera Data](https://mirror.umd.edu/roswiki/attachments/Events(2f)PR2BetaTraining/camera_processing.pdf)  
