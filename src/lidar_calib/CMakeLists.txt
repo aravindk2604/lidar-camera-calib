@@ -165,6 +165,10 @@ add_executable(lidar_calibration src/lidar_Cam_Calibration.cpp)
 target_link_libraries(lidar_calibration ${catkin_LIBRARIES} ${OpenCV_LIBS})
 add_executable(roscpp_pcl_example src/roscpp_pcl.cpp)
 target_link_libraries(roscpp_pcl_example ${catkin_LIBRARIES})
+add_executable(rgb_pointcloud src/lidar_RGBPCL.cpp)
+target_link_libraries(rgb_pointcloud ${catkin_LIBRARIES})
+add_executable(cluster_segmentation src/cluster_segmentation.cpp)
+target_link_libraries(cluster_segmentation ${catkin_LIBRARIES})
 
 #############
 ## Install ##
