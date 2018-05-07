@@ -3,7 +3,7 @@
 		
 		<node name="rosbag" pkg="rosbag" type="play" args=" -l --clock /home/ak/Git/new_rectified.bag" />
 		
-		<node name="image_proc" pkg="image_proc" type="image_proc" respawn="false" ns="/sensors/camera">
+		<node name="image_proc" pkg="image_proc" type="image_proc" respawn="true" ns="/sensors/camera">
 			<remap from="image_raw" to="image_rect_color" />
 		</node>
 
