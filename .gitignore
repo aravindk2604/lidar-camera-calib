@@ -24,3 +24,4 @@ devel/site/
 documentation/site/
 *.bag
 devel/
+.vscode
